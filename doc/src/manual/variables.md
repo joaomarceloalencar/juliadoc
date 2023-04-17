@@ -1,29 +1,26 @@
-# [Variables](@id man-variables)
+# [Variáveis](@id man-variables)
 
-A variable, in Julia, is a name associated (or bound) to a value. It's useful when you want to
-store a value (that you obtained after some math, for example) for later use. For example:
+Uma variável, em Julia, é um nome associado (ou ligado) a um valor. É util quando você deseja armazenar uma valor (que você obteve após algum cálculo, por exemplo) para uso posterior. Por exemplo:
 
 ```julia-repl
-# Assign the value 10 to the variable x
+# Atribua o valor 10 para a variável x
 julia> x = 10
 10
 
-# Doing math with x's value
+# Fazendo cálculos com o valor de x
 julia> x + 1
 11
 
-# Reassign x's value
+# Reatribuindo valor de x
 julia> x = 1 + 1
 2
 
-# You can assign values of other types, like strings of text
-julia> x = "Hello World!"
-"Hello World!"
+# Você pode atribuir valores de outros tipos, como cadeias de caracteres
+julia> x = "Olá Mundo!"
+"Olá Mundo!"
 ```
 
-Julia provides an extremely flexible system for naming variables. Variable names are case-sensitive,
-and have no semantic meaning (that is, the language will not treat variables differently based
-on their names).
+Julia fornece um sistema extremamente flexível para nomear variáveis. Nomes de variáveis diferencia maiúsculas de minúsculas e não significado semântico (isto é, a linguagem não trata variáveis de forma diferente baseada no seus nomes).
 
 ```jldoctest
 julia> x = 1.0
@@ -32,35 +29,29 @@ julia> x = 1.0
 julia> y = -3
 -3
 
-julia> Z = "My string"
+julia> Z = "Minha string"
 "My string"
 
-julia> customary_phrase = "Hello world!"
-"Hello world!"
+julia> frase_comum = "Olá Mundo!"
+"Olá Mundo!"
 
-julia> UniversalDeclarationOfHumanRightsStart = "人人生而自由，在尊严和权利上一律平等。"
+julia> DeclaraçãoUniversalDosDireitosHumanos = "人人生而自由，在尊严和权利上一律平等。"
 "人人生而自由，在尊严和权利上一律平等。"
 ```
 
-Unicode names (in UTF-8 encoding) are allowed:
+Nomes UNICODE (em codificação UTF-8) são permitidos:
 
 ```jldoctest
 julia> δ = 0.00001
 1.0e-5
 
-julia> 안녕하세요 = "Hello"
-"Hello"
+julia> 안녕하세요 = "Olá"
+"Olá"
 ```
 
-In the Julia REPL and several other Julia editing environments, you can type many Unicode math
-symbols by typing the backslashed LaTeX symbol name followed by tab. For example, the variable
-name `δ` can be entered by typing `\delta`-*tab*, or even `α̂⁽²⁾` by `\alpha`-*tab*-`\hat`-
-*tab*-`\^(2)`-*tab*. (If you find a symbol somewhere, e.g. in someone else's code,
-that you don't know how to type, the REPL help will tell you: just type `?` and
-then paste the symbol.)
+No terminal Julia (REPL) e em vários outros ambientes de edição Julia, você pode digitar vários símbolos matemáticos do UNICODE usando o nome do símbolo em LaTeX precedido por uma barra invertida e seguido por uma _tab_. Por exemplo, a variável `δ` pode ser inseridade digitando `\delta`-*tab*, ou até mesmo `α̂⁽²⁾` por `\alpha`-*tab*-`\hat`- *tab*-`\^(2)`-*tab*. (Se você encontrar um símbolo em algum lugar, por exemplo em código de outra pessoa, que você não sabe como digitar, a ajuda do REPL irá informá-lo: apenas digite `?` e em seguida cole o símbolo.)
 
-Julia will even let you redefine built-in constants and functions if needed (although
-this is not recommended to avoid potential confusions):
+Julia irá até deixar você redefinir constantes e funções internas se necessário (apesar de não é recomendado para evitar confusões potenciais):
 
 ```jldoctest
 julia> pi = 3
@@ -76,6 +67,8 @@ julia> sqrt = 4
 However, if you try to redefine a built-in constant or function already in use, Julia will give
 you an error:
 
+Entretanto, se você tentar redefinir uma constante ou função interna já em uso, Julia irá lhe devolver um erro:
+
 ```jldoctest
 julia> pi
 π = 3.1415926535897...
@@ -90,15 +83,10 @@ julia> sqrt = 4
 ERROR: cannot assign a value to imported variable Base.sqrt from module Main
 ```
 
-## [Allowed Variable Names](@id man-allowed-variable-names)
+## [Nomes de Variáveis Permitidos](@id man-allowed-variable-names)
 
-Variable names must begin with a letter (A-Z or a-z), underscore, or a subset of Unicode code
-points greater than 00A0; in particular, [Unicode character categories](https://www.fileformat.info/info/unicode/category/index.htm)
-Lu/Ll/Lt/Lm/Lo/Nl (letters), Sc/So (currency and other symbols), and a few other letter-like characters
-(e.g. a subset of the Sm math symbols) are allowed. Subsequent characters may also include ! and
-digits (0-9 and other characters in categories Nd/No), as well as other Unicode code points: diacritics
-and other modifying marks (categories Mn/Mc/Me/Sk), some punctuation connectors (category Pc),
-primes, and a few other characters.
+Nomes de variáveis devem começar com uma letra (A-Z ou a-z), sublinhado, ou um subconjunto de pontos de código Unicode acima de 00A0; em particular, [categoria de caracteres unicode](https://www.fileformat.info/info/unicode/category/index.htm)
+Lu/Ll/Lt/Lm/Lo/Nl (letras), Sc/So (monetários e outros símbolos) e mais alguns caracteres semelhantes à letras (exemplo, um subconjunto dos símbolos matemáticos Sm) são permitidos. Caracteres subsequentes podem também incluir ! e dígitos (0-9 e outros caracteres nas categorias Nd/No), assim como outros pontos de código Unicode, diacríticos e outras marcas modificadoras (categorias Mn/Mc/Me/Sk), alguns conectores de pontuação (categoria Pc), primos e mais alguns outros caracteres.
 
 Operators like `+` are also valid identifiers, but are parsed specially. In some contexts, operators
 can be used just like variables; for example `(+)` refers to the addition function, and `(+) = f`
@@ -110,6 +98,7 @@ A space is required between an operator that ends with a subscript/superscript l
 variable name. For example, if `+ᵃ` is an operator, then `+ᵃx` must be written as `+ᵃ x` to distinguish
 it from `+ ᵃx` where `ᵃx` is the variable name.
 
+Operadores como `+` também são identificadores válidos, mas são analisados de forma diferente. Em alguns contextos, operadores podem ser usados da mesma forma que variáveis; por exemplo `(+)` se refere a função de adição e `(+)` irá atribuí-lo novamente.
 
 A particular class of variable names is one that contains only underscores. These identifiers can only be assigned values, which are immediately discarded, and cannot therefore be used to assign values to other variables (i.e., they cannot be used as [`rvalues`](https://en.wikipedia.org/wiki/Value_(computer_science)#Assignment:_l-values_and_r-values)) or use the last value
 assigned to them in any way.
