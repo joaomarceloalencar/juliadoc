@@ -20,7 +20,7 @@ julia> x = "Olá Mundo!"
 "Olá Mundo!"
 ```
 
-Julia fornece um sistema extremamente flexível para nomear variáveis. Nomes de variáveis diferencia maiúsculas de minúsculas e não significado semântico (isto é, a linguagem não trata variáveis de forma diferente baseada no seus nomes).
+Julia fornece um sistema extremamente flexível para nomear variáveis. Nomes de variáveis diferencia maiúsculas de minúsculas e não tem significado semântico (isto é, a linguagem não trata variáveis de forma diferente baseada no seus nomes).
 
 ```jldoctest
 julia> x = 1.0
@@ -64,9 +64,6 @@ julia> sqrt = 4
 4
 ```
 
-However, if you try to redefine a built-in constant or function already in use, Julia will give
-you an error:
-
 Entretanto, se você tentar redefinir uma constante ou função interna já em uso, Julia irá lhe devolver um erro:
 
 ```jldoctest
@@ -88,20 +85,9 @@ ERROR: cannot assign a value to imported variable Base.sqrt from module Main
 Nomes de variáveis devem começar com uma letra (A-Z ou a-z), sublinhado, ou um subconjunto de pontos de código Unicode acima de 00A0; em particular, [categoria de caracteres unicode](https://www.fileformat.info/info/unicode/category/index.htm)
 Lu/Ll/Lt/Lm/Lo/Nl (letras), Sc/So (monetários e outros símbolos) e mais alguns caracteres semelhantes à letras (exemplo, um subconjunto dos símbolos matemáticos Sm) são permitidos. Caracteres subsequentes podem também incluir ! e dígitos (0-9 e outros caracteres nas categorias Nd/No), assim como outros pontos de código Unicode, diacríticos e outras marcas modificadoras (categorias Mn/Mc/Me/Sk), alguns conectores de pontuação (categoria Pc), primos e mais alguns outros caracteres.
 
-Operators like `+` are also valid identifiers, but are parsed specially. In some contexts, operators
-can be used just like variables; for example `(+)` refers to the addition function, and `(+) = f`
-will reassign it. Most of the Unicode infix operators (in category Sm), such as `⊕`, are parsed
-as infix operators and are available for user-defined methods (e.g. you can use `const ⊗ = kron`
-to define `⊗` as an infix Kronecker product).  Operators can also be suffixed with modifying marks,
-primes, and sub/superscripts, e.g. `+̂ₐ″` is parsed as an infix operator with the same precedence as `+`.
-A space is required between an operator that ends with a subscript/superscript letter and a subsequent
-variable name. For example, if `+ᵃ` is an operator, then `+ᵃx` must be written as `+ᵃ x` to distinguish
-it from `+ ᵃx` where `ᵃx` is the variable name.
+Operadores como `+` também são identificadores válidos, mas são analisados de forma diferente. Em alguns contextos, operadores podem ser usados da mesma forma que variáveis; por exemplo `(+)` se refere a função de adição e `(+) = f` irá reatribuí-lo. A maioria dos operadores infixos do Unicode (categoria SM), tais como `⊕` são avaliados como operadores infixos e estão disponíveis para métodos definidos pelo usuário (isto é, você pode usar  `const ⊗ = kron` para definir `⊗` como o produto infixo de Kronecker). Operadores tambéms podem ter sufixos com marcas modificadoras, primos e sobrescritos ou subscritos, isto é,  `+̂ₐ″` é avaliado como um operador infixo com a mesma precedência de `+`. Um espaço é necessário entre um operador que termina com uma letra subscrita/sobrescrita e um nome de variável subsequente. Por exemplo se `+ᵃ` é um operador, então `+ᵃx` deve ser escrito com `+ᵃ x` para distinguir da cadeia `+ ᵃx`, na qual `ᵃx` é o nome da variável.
 
-Operadores como `+` também são identificadores válidos, mas são analisados de forma diferente. Em alguns contextos, operadores podem ser usados da mesma forma que variáveis; por exemplo `(+)` se refere a função de adição e `(+)` irá atribuí-lo novamente.
-
-A particular class of variable names is one that contains only underscores. These identifiers can only be assigned values, which are immediately discarded, and cannot therefore be used to assign values to other variables (i.e., they cannot be used as [`rvalues`](https://en.wikipedia.org/wiki/Value_(computer_science)#Assignment:_l-values_and_r-values)) or use the last value
-assigned to them in any way.
+Uma classe particular de variáveis é aquela que contém apenas sublinhados. Estes identificadores só podem ter valores atribuídos, que são descartados imediatamente e não podem desta forma serem usados para atribuir valores para outras variáveis (isto é, eles não podem ser usados como [`rvalues`](https://en.wikipedia.org/wiki/Value_(computer_science)#Assignment:_l-values_and_r-values)) ou até mesmo utilizar os últimos valores atribuídos a eles de qualquer forma.
 
 ```julia-repl
 julia> x, ___ = size([2 2; 1 1])
@@ -116,6 +102,8 @@ ERROR: syntax: all-underscore identifier used as rvalue
 
 The only explicitly disallowed names for variables are the names of the built-in [Keywords](@ref Keywords):
 
+Os únicos nomes explicitamente proibidos para variáveis são as [palavras chave](@ref Keywords) embutidas:
+
 ```julia-repl
 julia> else = false
 ERROR: syntax: unexpected "else"
@@ -124,17 +112,11 @@ julia> try = "No"
 ERROR: syntax: unexpected "="
 ```
 
-Some Unicode characters are considered to be equivalent in identifiers.
-Different ways of entering Unicode combining characters (e.g., accents)
-are treated as equivalent (specifically, Julia identifiers are [NFC](https://en.wikipedia.org/wiki/Unicode_equivalence).
-Julia also includes a few non-standard equivalences for characters that are
-visually similar and are easily entered by some input methods. The Unicode
-characters `ɛ` (U+025B: Latin small letter open e) and `µ` (U+00B5: micro sign)
-are treated as equivalent to the corresponding Greek letters. The middle dot
-`·` (U+00B7) and the Greek
-[interpunct](https://en.wikipedia.org/wiki/Interpunct) `·` (U+0387) are both
-treated as the mathematical dot operator `⋅` (U+22C5).
-The minus sign `−` (U+2212) is treated as equivalent to the hyphen-minus sign `-` (U+002D).
+Alguns caracteres Unicode são considerados equivalentes ao serem usados em identificadores. Maneiras diferentes de informar caracteres combinantes no Unicode (isto é
+, acentos) são tratados como equivalentes (especificamente, identificadores Julia são [NFC](https://en.wikipedia.org/wiki/Unicode_equivalence). Julia também inclui algumas equivalê
+ncias fora do padrão para caracteres que são visualmente similares e são facilmente informados por algum método de entrada. O caractere Unicode `ɛ` (U+025B: letra pequena aberta latina e) and `µ` (U+00B5: sinal micro) são tratados como equivalentes a letras gregas correspondentes. O ponto mediano `·` (U+00B7) e o Grego
+[intercalar](https://en.wikipedia.org/wiki/Interpunct) `·` (U+0387) são tratados como operador matemático `⋅` (U+22C5). O sinal de menos `−` (U+2212) é tratado como equivalente ao hí
+fen `-` (U+002D).
 
 ## [Assignment expressions and assignment versus mutation](@id man-assignment-expressions)
 
