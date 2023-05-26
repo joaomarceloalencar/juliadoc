@@ -118,16 +118,11 @@ ncias fora do padrão para caracteres que são visualmente similares e são faci
 [intercalar](https://en.wikipedia.org/wiki/Interpunct) `·` (U+0387) são tratados como operador matemático `⋅` (U+22C5). O sinal de menos `−` (U+2212) é tratado como equivalente ao hí
 fen `-` (U+002D).
 
-## [Assignment expressions and assignment versus mutation](@id man-assignment-expressions)
+## [Expressões de atribuição e atribuição versus mutação](@id man-assignment-expressions)
 
-An assignment `variable = value` "binds" the name `variable` to the `value` computed
-on the right-hand side, and the whole assignment is treated by Julia as an expression
-equal to the right-hand-side `value`.  This means that assignments can be *chained*
-(the same `value` assigned to multiple variables with `variable1 = variable2 = value`)
-or used in other expressions, and is also why their result is shown in the REPL as
-the value of the right-hand side.  (In general, the REPL displays the value of whatever
-expression you evaluate.)  For example, here the value `4` of `b = 2+2` is
-used in another arithmetic operation and assignment:
+Uma atribuição `variável = valor` vincula o nome `variável` ao `valor` calculado no lado direito e toda a atribuição
+é tratada por Julia como uma expressão igual ao `valor` do lado direito. Isso significa que atribuições podem ser
+encadeadas (o mesmo `valor` atribuído para muitas variáveis com `variável1 = variável2 = valor`) ou usadas em outras expressões e esta é a razão pela qual seu resultado é mostrado na REPL como o valor do lado direito. (Em geral, a REPL mostra o valor de qualquer expressão avaliada). Por exemplo, aqui o valor `4` de `b = 2 + 2` é usado em outra operação aritmética e atribuição:
 
 ```jldoctest
 julia> a = (b = 2+2) + 3
@@ -140,70 +135,51 @@ julia> b
 4
 ```
 
-A common confusion is the distinction between *assignment* (giving a new "name" to a value)
-and *mutation* (changing a value).  If you run `a = 2` followed by `a = 3`, you have changed
-the "name" `a` to refer to a new value `3` … you haven't changed the number `2`, so `2+2`
-will still give `4` and not `6`!   This distinction becomes more clear when dealing with
-*mutable* types like [arrays](@ref lib-arrays), whose contents *can* be changed:
+Uma confusão comum é distinção entre *atribuição* (dar um novo "nome" a um valor) e *mutação* (alterar um valor).
+Se você executar `a = 2` seguido por `a = 3`, você mudou o "nome" `a` para referenciar o novo valor `3`. Você não alterou o número `2`, portanto `2 + 2` ainda irá retornar `4` e não `6`! Esta distinção se torna mais clara ao lidar com objetos *mutáveis* como [arrays](@ref lib-arrays), cujo conteúdo *pode* ser alterado:
 
 ```jldoctest mutation_vs_rebind
-julia> a = [1,2,3] # an array of 3 integers
+julia> a = [1,2,3] # um array de 3 inteiros
 3-element Vector{Int64}:
  1
  2
  3
 
-julia> b = a   # both b and a are names for the same array!
+julia> b = a       # tanto b quanto a são nomes para o mesmo array!
 3-element Vector{Int64}:
  1
  2
  3
 ```
 
-Here, the line `b = a` does *not* make a copy of the array `a`, it simply binds the name
-`b` to the *same* array `a`: both `b` and `a` "point" to one array `[1,2,3]` in memory.
-In contrast, an assignment `a[i] = value` *changes* the *contents* of the array, and the
-modified array will be visible through both the names `a` and `b`:
+Aqui, a linha `b = a` não faz uma cópia do _array_ `a`, simplesmente vincula o nome `b` para o mesmo _array_ `a`: tanto `b` quanto `a` apontam para o _array_ `[1,2,3]` na memória. Em contraste, uma atribuição `a[i] = valor` altera o conteúdo do `array` e o `array` modificado será visível tanto pelo nome `a` quanto pelo nome `b`:
 
 ```jldoctest mutation_vs_rebind
-julia> a[1] = 42     # change the first element
+julia> a[1] = 42     # alterar o primeiro elemento
 42
 
-julia> a = 3.14159   # a is now the name of a different object
+julia> a = 3.14159   # a agora é o nome de um objeto diferente
 3.14159
 
-julia> b   # b refers to the original array object, which has been mutated
+julia> b             # b referencia o objeto array original, que foi alterado
 3-element Vector{Int64}:
  42
   2
   3
 ```
-That is, `a[i] = value` (an alias for [`setindex!`](@ref)) *mutates* an existing array object
-in memory, accessible via either `a` or `b`.  Subsequently setting `a = 3.14159`
-does not change this array, it simply binds `a` to a different object; the array is still
-accessible via `b`. The other common syntax to mutate an existing object is
-`a.field = value` (an alias for [`setproperty!`](@ref)), which can be used to change
-a [`mutable struct`](@ref).
 
-When you call a [function](@ref man-functions) in Julia, it behaves as if you *assigned*
-the argument values to new variable names corresponding to the function arguments, as discussed
-in [Argument-Passing Behavior](@ref man-functions).  (By [convention](@ref man-punctuation),
-functions that mutate one or more of their arguments have names ending with `!`.)
+Isto é, `a[i] = valor` (um apelido para [`setindex!`](@ref)) *altera* um objeto _array_ existente em memória, acessível seja por `a` ou `b`. Atribuir `a = 3.14159` não altera este _array_, simplesmente vincula `a` para um objeto diferente; o _array_ ainda é acessível por `b`. Outra sintaxe comum para alterar um objeto existente é `a.campo = valor` (um apelido para [`setproperty!`](@ref)), que pode ser usada para alterar uma [`estrutura mutável`](@ref).
 
+Quando você chama uma [função](@ref man-functions) e Julia, ela se comporta como se você tivesse *atribuído* os valores dos argumentos para novos nomes de variáveis correspondendo aos argumentos da função, como discutindo em [Comportamento de Passagem de Argumento](@ref man-functions). (Por [convenção](@ref man-punctuation), funçòes que alteram um ou mais dos seus argumentos devem ter nomes terminando com `!`). 
 
-## Stylistic Conventions
+## Convenções de Estilo
 
-While Julia imposes few restrictions on valid names, it has become useful to adopt the following
-conventions:
+Apesar de Julia impor poucas restrições a nomes válidos, se tornou útil adotar as seguintes convenções:
 
-  * Names of variables are in lower case.
-  * Word separation can be indicated by underscores (`'_'`), but use of underscores is discouraged
-    unless the name would be hard to read otherwise.
-  * Names of `Type`s and `Module`s begin with a capital letter and word separation is shown with upper
-    camel case instead of underscores.
-  * Names of `function`s and `macro`s are in lower case, without underscores.
-  * Functions that write to their arguments have names that end in `!`. These are sometimes called
-    "mutating" or "in-place" functions because they are intended to produce changes in their arguments
-    after the function is called, not just return a value.
+  * Nomes de variáveis em minúsculo.
+  * Separação de palavras pode ser indicada por sublinhados (`'_'`), mas o uso de sublinhados é desencorajado a não ser que o nome se tornasse difícil de ler sem usá-los.
+  * Nomes de tipos e módulos começam com uma letra maiúscula e a separação de palavras é feita com letras maiúsculas no lugar de sublinhados.
+  * Nomes de funções e macros são em minúsculas, sem sublinhados.
+  * Funções que atualizam os argumentos tem nomes que terminam em `!`. Estas são algumas vezes chamadas de funções "mutante" ou "em local" porque são definidas para alterar seus argumentos após a invocação da função, não apenas retornar um valor.
 
-For more information about stylistic conventions, see the [Style Guide](@ref).
+Para mais informações sobre convenções de estilo, veja o [Guia de Estilo](@ref).

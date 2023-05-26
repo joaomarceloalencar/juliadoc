@@ -74,7 +74,7 @@ Enquanto o programador casual não precisa utilizar explicitamente tipos ou desp
 
 Em parte devido a inferência de tipos em tempo de execução (aprimorada por anotações de tipo opcionais) e em parte por causa da ênfase em desempenho desde a criação do projeto, a eficiência computacional da Julia é superior a de outras linguagens dinâmicas e até mesmo rivaliza a de linguagens com compilação estática. Para problemas numéricos de larga escala, velocidade sempre foi, e continua sendo, e provavelmente sempre será crucial: a quantidade de dados sendo processadas tem facilmente acompanhado o ritmo da Lei de Moore no decorrer das últimas décadas. 
 
-### [Advantages of Julia](@id man-advantages-of-julia)
+### [Vantagens da Julia](@id man-advantages-of-julia)
 
 Julia tem como objetivo criar uma combinação sem precedentes de facilidade de uso, poder e eficiência em uma única linguagem. Em adição ao que já foi dito acima, algumas vantagens de Julia em relação a sistemas semelhantes inclui:
 
